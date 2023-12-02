@@ -1,0 +1,123 @@
+/* Thiết lập độ rộng và màu nền của thanh công cụ */
+
+/* .row {
+    width: 100%;
+} */
+
+
+/* Thiết lập kiểu button */
+
+/* Thiết lập dropdown menu */
+
+.dropdown-menu {
+    display: none;
+    /* ẩn khi chưa nhấn */
+    list-style-type: none;
+    /* loại bỉ các dấu ...*/
+    padding: 0;
+}
+
+
+/* Hiển thị dropdown menu khi hover vào button */
+
+.dropdown:hover .dropdown-menu {
+    /* hover : di chuột qua --> display = block*/
+    display: block;
+}
+
+
+/* Thiết lập các mục trong dropdown menu */
+
+
+/* anh cac san pham //////////////////////////////////////////////////////*/
+
+.table-container {
+    max-height: 400px;
+    /* Độ cao tối đa của bảng, điều chỉnh theo nhu cầu */
+    overflow-y: scroll;
+    /* Tạo thanh cuộn dọc */
+}
+
+.fixed-table {
+    width: 100%;
+    border-collapse: collapse;
+    /*đường viền (border) của các ô trong một bảng HTML tương tác với nhau.*/
+}
+
+.fixed-table,
+th,
+td {
+    border: none;
+    /*đường viền (border) của các ô trong một bảng HTML tương tác với nhau.*/
+}
+
+#Giohang1,
+#Taikhoan1 {
+    /* margin-right: 70%; */
+    border: none;
+    background-color: transparent;
+}
+
+#Giohang1 ion-icon,
+#Taikhoan1 ion-icon {
+    width: 30px;
+    height: 30px;
+    color: white;
+}
+
+
+/* trang info ****************************************************************************************************************/
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 2px solid #000;
+}
+
+.form-image {
+    border: 2px solid #000;
+    text-align: left;
+}
+
+.form-p {
+    text-align: left;
+}
+
+.form {
+    border: 2px solid #000;
+    padding: 20px;
+    text-align: left;
+}
+
+
+/* Định dạng cho nút submit */
+
+.form input[type="submit"] {
+    margin-top: 20px;
+    justify-content: flex-end;
+    /* Điều chỉnh khoảng cách giữa các nút */
+}
+
+
+/* thanh điều hướng */
+
+.flex {
+    display: flex;
+}
+
+.dropdown .btn-primary {
+    background-color: transparent;
+}
+
+.left-col {
+    gap: 20px
+}
+
+.right-col {
+    gap: 5px;
+}
+
+.right-col>form {
+    display: flex;
+    margin: auto;
+}
