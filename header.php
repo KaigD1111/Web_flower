@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styleheader.css"> <!-- Đường dẫn tới file CSS -->
@@ -39,7 +40,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="Lienhe.php">Liên hệ</a>
                 </li>
-                <form id="searchForm" action="#" method="get" class="right-col flex ">
+                <form id="searchForm" action="#" method="get" class="right-col flex "style="margin-right: 100px;">
                     <input class="form-control me-2" type="text" id="searchInput" name="keyword" placeholder="Tìm kiếm sản phẩm" value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>">
                     <i class="fa-solid fa-magnifying-glass fa-2x" style="color: white"></i>
                 </form>
@@ -56,19 +57,40 @@
                         });
                     });
                 </script>
+
+                <ul class="navbar-nav" style="position: relative;">
+                    <div class="nav-item dropdown" style="position: absolute; left: 840px;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="account_icon.png" alt="User Icon" style="width: 40px; height: 40px;">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="login.PHP">đăng nhập</a></li>
+                            <li><a class="dropdown-item" href="dangkytaikhoan.php">đăng ký</a></li>
+                        </ul>
+                    </div>
+                </ul>
+
                 <div class=headericon>
                     <i class="fa-regular fa-heart fa-2x" style="color: white" ;></i>
-                    <a href="Giohang.php" class="cart-link" >
+                    <a href="Giohang.php" class="cart-link"  style="margin-right: 100px;">
                         <i class="fa-solid fa-cart-shopping fa-2x" style="color: white"></i>
                     </a>
-                    <a href="login.php" class="cart-link1">
+                    
+                     <!-- <a href="login.php" class="cart-link1" style="margin-right: 500px;">
                         <i class="fa-regular fa-user fa-2x" style="color: white"></i>
-                    </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">đăng nhập</a></li>
+                            <li><a class="dropdown-item" href="#">đăng ký</a></li>
+                        </ul>
+                    </a>-->
                 </div>
             </ul>
         </div>
     </nav>
     </div>
+
+
+
     <div id="demo" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ul class="carousel-indicators">
