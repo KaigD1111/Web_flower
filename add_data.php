@@ -19,10 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST["id"];
     $name = $_POST["name"];
     $sex = $_POST["sex"];
+    $pass=$_POST["password"];
     echo "gt :".$sex;
     // Câu lệnh SQL để thêm dữ liệu
-    $sql = "INSERT INTO client (id, name,sex)
-    VALUES ('$id', '$name','$sex')";
+    $sql = "INSERT INTO client (id, name,sex,pass_word)
+    VALUES ('$id', '$name','$sex','$pass')";
 
     if ($conn->query($sql) === TRUE) {
         echo "Dữ liệu đã được thêm thành công";

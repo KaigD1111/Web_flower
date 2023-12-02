@@ -65,7 +65,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="login.PHP">đăng nhập</a></li>
-                            <li><a class="dropdown-item" href="dangkytaikhoan.php">đăng ký</a></li>
+                            <li><a class="dropdown-item" href="dktk.php">đăng ký</a></li>
                         </ul>
                     </div>
                 </ul>
