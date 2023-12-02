@@ -74,15 +74,14 @@ button:hover {
   }
 }
 </style>
-    <link rel="stylesheet" href="style.css"> <!-- Đường dẫn tới file CSS -->
+    <link rel="stylesheet" href="header.css"> 
+    <link rel="stylesheet" href="styleheader.css"> <!-- Đường dẫn tới file CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
-    <header>
+
     <?php include('header.php'); ?>
-    </header>
-     
 
 <form action="add_data.php" method="post" style="border:1px solid #ccc">
   <div class="container">
@@ -115,7 +114,6 @@ button:hover {
 
     <label for="phone">Số điện thoại:</label>
     <input type="tel" id="phone" name="id">
-    
     <div class="clearfix">
       <button type="button" class="cancelbtn">Hủy bỏ</button>
       <button type="submit" class="signupbtn">Đăng ký</button>
