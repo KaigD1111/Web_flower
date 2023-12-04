@@ -108,7 +108,7 @@
                     <form action="Processing_Info_Or_Delete.php" method="POST">
                         <?php $sl = findNumberAfterString($my_bag, "ID_" . $row["id"] . "_SL_");
                         //echo "ID_" . $row["id"] . "_SL_" . "sllll" . $sl ?>
-                        <img width='100' src='img/<?php echo $row["id"] . '.jpg'; ?>' alt='Mô tả hình ảnh'>
+                        <img width='100' src='img/<?php echo $row["id"] ; ?>' alt='Mô tả hình ảnh'>
                         <label for="inputData">'<?php echo $row["name"]; ?>'</label>
                         <label for="slData">'<?php echo $sl; ?>'</label>
                         <input type="submit" name="action" value="Xem">

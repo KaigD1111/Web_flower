@@ -68,17 +68,17 @@ function displayProductTable($searchKeyword = '') {
                 echo "<tr>"; // Bắt đầu một hàng mới
             }
             //echo "Search Keyword: " . $searchKeyword;
-            if (isWordInString($searchKeyword, $row["name"] . '.jpg')) # tìm kiếm sans phâmr
+            if (isWordInString($searchKeyword, $row["name"] )) # tìm kiếm sans phâmr
             {
                 echo "<td>";
                 ?>
                 <div class="form_sp">
                     <form action="Processing_Info_Or_Delete.php" method="POST">
-                        <!--<img class="sp-image" src="img/ <?php echo $row["id"] . '.jpg'; ?>" alt="Mô tả hình ảnh">-->
-                        <button type="submit" name="action" value="Xem" style="background-image: url('img/<?php echo $row["id"] . '.jpg'; ?>'); background-size: cover; width: 150px; height: 150px;">
-                            <span style="display: none;"><?php echo $row["name"] . '.jpg'; ?></span>
+                        <!--<img class="sp-image" src="img/ <?php echo $row["id"] ; ?>" alt="Mô tả hình ảnh">-->
+                        <button type="submit" name="action" value="Xem" style="background-image: url('img/<?php echo $row["id"]; ?>'); background-size: cover; width: 150px; height: 150px;">
+                            <span style="display: none;"><?php echo $row["name"] ; ?></span>
                         </button>
-                        <label class="sp-label" for="inputData"><?php echo $row["name"] . '.jpg'; ?></label>
+                        <label class="sp-label" for="inputData"><?php echo $row["name"] ; ?></label>
                         <label class="sp-price" for="inputData"><?php echo $row["gia"] ; ?></label>
                         
                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">

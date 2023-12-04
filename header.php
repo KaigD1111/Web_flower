@@ -40,10 +40,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="Lienhe.php">Liên hệ</a>
                 </li>
-                <form id="searchForm" action="#" method="get" class="right-col flex "style="margin-right: 100px;">
-                    <input class="form-control me-2" type="text" id="searchInput" name="keyword" placeholder="Tìm kiếm sản phẩm" value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>">
-                    <i class="fa-solid fa-magnifying-glass fa-2x" style="color: white"></i>
-                </form>
 
                 <script>
                     $(document).ready(function() {
@@ -57,9 +53,9 @@
                         });
                     });
                 </script>
-
+                <!-- // dang nhap dang ky -->
                 <ul class="navbar-nav" style="position: relative;">
-                    <div class="nav-item dropdown" style="position: absolute; left: 840px;">
+                    <div class="nav-item dropdown" style="position: absolute; left: 500px;">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <img src="account_icon.png" alt="User Icon" style="width: 40px; height: 40px;">
                         </a>
@@ -71,8 +67,12 @@
                 </ul>
 
                 <div class=headericon>
+                    <form id="searchForm" action="#" method="get" class="right-col flex "style="margin-right: 100px;">
+                        <input class="form-control me-2" type="text" id="searchInput" name="keyword" placeholder="Tìm kiếm sản phẩm" value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>">
+                        <i class="fa-solid fa-magnifying-glass fa-2x" style="color: white"></i>
+                    </form>
                     <i class="fa-regular fa-heart fa-2x" style="color: white" ;></i>
-                    <a href="Giohang.php" class="cart-link"  style="margin-right: 100px;">
+                    <a href="Giohang.php" class="cart-link" >
                         <i class="fa-solid fa-cart-shopping fa-2x" style="color: white"></i>
                     </a>
                     
@@ -83,6 +83,7 @@
                             <li><a class="dropdown-item" href="#">đăng ký</a></li>
                         </ul>
                     </a>-->
+                    
                 </div>
             </ul>
         </div>

@@ -14,20 +14,40 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <title>thong tin san pham</title>
+    <style>
+        .form-container {
+            width: 100%;
+        }
+
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .form-image {
+            width: 400px; /* Đặt chiều rộng tùy thuộc vào kích thước ảnh mong muốn */
+            padding: 20px;
+        }
+
+        .form-ft {
+            padding: 20px;
+        }
+    </style>
+
 </head>
 <body>
 <?php include('header.php'); ?>
 <!-- Your existing script -->
-
-<div class="form-image">
+<div class="form-container">
+<table class="form-table">
+        <tr>
+        <td class="form-image">
             <?php
-            
             if (isset($_GET["id"])) {
                 $id = ($_GET["id"]);
-                $anh = 'img/' . $_GET["id"].'.jpg';
-                echo $anh;
+                $anh = 'img/' . $_GET["id"];
                 if (file_exists($anh)) {
-                    echo "<img src='$anh' alt='Ảnh sản phẩm' width='500' height='500'>" ;
+                    echo "<img src='$anh' alt='Ảnh sản phẩm' width='400' height='400'>" ;
                 } else {
                     echo "<p>Đường dẫn ảnh không tồn tại.</p>";
                 }
@@ -60,10 +80,12 @@
                 echo "not find row have ID = $id";
             }
             $conn->close();
+            
             ?>
+        </td>
 
+        <td class="form-ft">
             <form action="Process_add_to_bag.php" method="post">
-                <!-- Các trường và dữ liệu bạn muốn bao gồm trong biểu mẫu -->
                 <label for="input1">Mô tả:</label>
                 <p><?php echo $mt ?></p> <!-- Mô tả -->
 
@@ -76,8 +98,9 @@
                 <input type="submit" name="gio" value="Thêm vào giỏ">
                 <input type="submit" name="mua" value="Mua ngay">
             </form>
-
-</div>
+        </td>
+        </tr>
+    </table>
 <?php include('footer.php');?>
 </body>
 </html>
