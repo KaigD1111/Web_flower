@@ -17,14 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Kết nối không thành công: " . $conn->connect_error);
         }
 
-        $sql = "SELECT id, pass_word FROM client WHERE id = ?";
+        $sql = "SELECT id, pass_word,role FROM client WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $tentk);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            $stmt->bind_result($db_id, $db_pass);
+            $stmt->bind_result($db_id, $db_pass,$db_role);
             $stmt->fetch();
             echo $pass;
             echo $db_pass;
@@ -38,7 +38,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $acc = $db_id;
                 session_start(); # phiên siêu toàn cục 
                 $_SESSION['acc'] = $acc;
-                header("Location: Main.php");
+                if ($db_role == "AD") {
+                    header("Location: addproductmanagerment.php");
+                } else {
+                    header("Location: Main.php");
+                }
                 exit();
             } else {
                 

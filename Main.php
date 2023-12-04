@@ -50,7 +50,7 @@
 
 session_start();
 // Truy cập giá trị của biến toàn cục $acc
-$accc = $_SESSION['acc'];
+//$accc = $_SESSION['acc'];
 //echo $accc;
 include('header.php');
 ?>

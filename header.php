@@ -67,13 +67,13 @@
                 </ul>
 
                 <div class=headericon>
-                    <form id="searchForm" action="#" method="get" class="right-col flex "style="margin-right: 100px;">
+                    <form id="searchForm" action="#" method="get" class="right-col flex " >
                         <input class="form-control me-2" type="text" id="searchInput" name="keyword" placeholder="Tìm kiếm sản phẩm" value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>">
                         <i class="fa-solid fa-magnifying-glass fa-2x" style="color: white"></i>
                     </form>
                     <i class="fa-regular fa-heart fa-2x" style="color: white" ;></i>
-                    <a href="Giohang.php" class="cart-link" >
-                        <i class="fa-solid fa-cart-shopping fa-2x" style="color: white"></i>
+                    <a href="Giohang.php" class="cart-link"  >
+                        <i class="fa-solid fa-cart-shopping fa-2x" style="color: white;" ></i>
                     </a>
                     
                      <!-- <a href="login.php" class="cart-link1" style="margin-right: 500px;">

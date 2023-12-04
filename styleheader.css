@@ -3,26 +3,36 @@
     color: white !important;
 }
 .navbar-nav{
-    gap:60px
+    gap:70px
 }
 /*#searchForm{
-    position: fixed; /* You can use 'absolute' or 'fixed' based on your layout */
- /*   top: 10px; /* Adjust the top position as needed */
- /*   right: 150px; /* Adjust the right position as needed */
- /*   z-index: 999; /* Adjust the z-index to make sure it's above other elements */
-/*    text-decoration: none; /* Remove underline from the link */
-/*}*/
-.headericon {
-    display: flex;
-    align-items: center;
-    margin-left: 10px; /* Set the left margin to 10px */
-}
-/*.headericon {
-/*    position: fixed; /* You can use 'absolute' or 'fixed' based on your layout */
-/*    top: 5px; /* Adjust the top position as needed */
-/*    right: 20px; /* Adjust the right position as needed */
+    position: absolute; /* You can use 'absolute' or 'fixed' based on your layout */
+/*    top: 10px; /* Adjust the top position as needed */
+/*        right: 150px; /* Adjust the right position as needed */
 /*    z-index: 999; /* Adjust the z-index to make sure it's above other elements */
 /*    text-decoration: none; /* Remove underline from the link */
 /*}
-
 */
+.headericon {
+    display: flex;
+    /* position: absolute; /* You can use 'absolute' or 'fixed' based on your layout */
+    top: 15px;
+    right: 20px;
+    z-index: 999;
+    text-decoration: none;
+}
+
+.headericon form {
+    margin-right: 10px; /* Adjust the margin between the form and icons */
+}
+
+.headericon i {
+    margin-right: 10px; /* Adjust the margin between icons */
+    color: white;
+}
+
+.headericon a {
+    margin-right: 100px; /* Adjust the margin between icons and the anchor link */
+    text-decoration: none; /* Remove underline from the link */
+}
+
