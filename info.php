@@ -85,7 +85,7 @@
         </td>
 
         <td class="form-ft">
-            <form action="Process_add_to_bag.php" method="post">
+            <form action="Processing_Info_Or_Delete.php" method="post">
                 <label for="input1">Mô tả:</label>
                 <p><?php echo $mt ?></p> <!-- Mô tả -->
 
@@ -95,8 +95,8 @@
                 <p><?php echo "ID: " . $_GET["id"] ?></p>
                 <input type="hidden" name="id_sp" value="<?php echo $_GET["id"] ?>">
 
-                <input type="submit" name="gio" value="Thêm vào giỏ">
-                <input type="submit" name="mua" value="Mua ngay">
+                <input type="submit" name="action" value="Thêm vào giỏ">
+                <input type="submit" name="action" value="Mua ngay">
             </form>
         </td>
         </tr>

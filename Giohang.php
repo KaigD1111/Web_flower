@@ -17,7 +17,7 @@
     }
 
     // Thực hiện câu lệnh SQL SELECT
-    echo "acc ".$acc;
+    //echo "acc ".$acc;
     $sql = "SELECT gio FROM client WHERE id = '$acc'";
 
     $result = $conn->query($sql);
@@ -26,7 +26,7 @@
         // Có ít nhất một hàng được trả về
         $row = $result->fetch_assoc();
         $my_bag = $row['gio'];
-        echo "Giá trị của cột 'gio' cho hàng có id = 000 là: " .  $my_bag;
+        //echo "Giá trị của cột 'gio' cho hàng có id = 000 là: " .  $my_bag;
     } else {
         echo "Không tìm thấy ";
     }
@@ -60,6 +60,7 @@
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="header.css">
     <title>Giỏ hàng của bạn</title>
     <!-- icon -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -101,7 +102,7 @@
                     echo "<tr>"; // row new i
                 }
                 if (strpos($my_bag, $row["id"]) !== false) 
-                {
+                {   echo $row["id"]." ";
                     $my_bags[$dem]=$row["id"];
                     ?>
                     <td>
