@@ -73,7 +73,7 @@ form {
 </head>
 <body>
 <div>
-    <form id="login" action="Processing_login.php" method="POST">
+    <form id="login" action="Processing.php" method="POST">
         <h2 align="center">Đăng nhập</h2>
         <table>
             <tr>

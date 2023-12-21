@@ -45,13 +45,6 @@
             <?php
             if (isset($_GET["id"])) {
                 $id = ($_GET["id"]);
-                $anh = 'img/' . $_GET["id"];
-                if (file_exists($anh)) {
-                    echo "<img src='$anh' alt='Ảnh sản phẩm' width='400' height='400'>" ;
-                } else {
-                    echo "<p>Đường dẫn ảnh không tồn tại.</p>";
-                }
-
             } else {
                     echo "NO have ID .";
             }
@@ -75,6 +68,12 @@
                 while ($row = $result->fetch_assoc()) {
                     //echo "ID: " . $row["id"]. "<br>";
                     $mt = $row["mota"];
+                    $anh = 'img/' . $row["image"];
+                if (file_exists($anh)) {
+                    echo "<img src='$anh' alt='Ảnh sản phẩm' width='400' height='400'>" ;
+                } else {
+                    echo "<p>Đường dẫn ảnh không tồn tại.</p>";
+                }
                 }
             } else {
                 echo "not find row have ID = $id";
@@ -85,7 +84,7 @@
         </td>
 
         <td class="form-ft">
-            <form action="Processing_Info_Or_Delete.php" method="post">
+            <form action="Processing.php" method="post">
                 <label for="input1">Mô tả:</label>
                 <p><?php echo $mt ?></p> <!-- Mô tả -->
 

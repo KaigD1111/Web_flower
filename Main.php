@@ -47,8 +47,6 @@
 <?php  
 #include('account.php');
 #echo $acc;
-
-session_start();
 // Truy cập giá trị của biến toàn cục $acc
 //$accc = $_SESSION['acc'];
 //echo $accc;

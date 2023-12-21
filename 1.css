@@ -1,0 +1,35 @@
+
+.headericon {
+    position: fixed; /* You can use 'absolute' or 'fixed' based on your layout */
+    top: 10px; /* Adjust the top position as needed */
+    right: 80px; /* Adjust the right position as needed */
+    z-index: 999; /* Adjust the z-index to make sure it's above other elements */
+    text-decoration: none; /* Remove underline from the link */
+    justify-content: space-between; /* Add space between items */
+}
+.headericon {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    padding: 10px; /* Add some padding for better spacing */
+    top: 5px;
+    right:65px
+}
+
+.headericon .dropdown-menu {
+    min-width: 100px; /* Set a minimum width for the dropdown menu */
+}
+#searchForm{
+    position: fixed; /* You can use 'absolute' or 'fixed' based on your layout */
+    top: 10px; /* Adjust the top position as needed */
+    right: 250px; /* Adjust the right position as needed */
+    z-index: 999; /* Adjust the z-index to make sure it's above other elements */
+    text-decoration: none; /* Remove underline from the link */
+}
+
+.navbar-nav{
+    gap:60px
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: white;
+}

@@ -1,70 +1,93 @@
-<!-- Not have Form validate, alert event. Modified 10/23/2023 by Quyen -->
-
-<!-- start of Modal of Add new elements-->
-<!-- Modified 10/22/2023 by Quyen -->
-
-
-<div class="modal fade modal-lg add-new-container" id="add-new" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="#add-product" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="add-product">Thêm mới sản phẩm</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <!-- form --------------------------------------->
-                <form action="processing_add_product_admin.php" method="post" enctype="multipart/form-data">
-                    <div class="row g-2">
-                        <!-- start of 1st column -->
-                        
-                            <label for="product-name" class="form-label">Tên Sản Phẩm</label>
-                            <input type="text" id="product-name" name="product-name" class="form-control">
-
-
-                            <label for="product-price" class="form-label">Giá</label>
-                            <input type="number" id="product-price" name="price" class="form-control" min="0" step="1">
-
-                           
-                                <div class="col">
-                                    <label for="product-size" class="form-label">Kích thước</label>
-                                    <select id="product-size" class="form-select">
-                                        <option value="" disabled selected hidden></option>
-                                        <option value="Vừa">Vừa</option>
-                                        <option value="Nhỏ">Nhỏ/option>
-                                        <option value="Lớn">Lớn</option>
-                                    </select>
-                                </div>
-                                
-                                    <label for="product-quantity" class="form-label">Số lượng</label>
-                                    <input type="number" id="product-quantity" class="form-control" min="0" step="1">
-                                
-                            </div>
-
-                            <label for="product-image" class="form-label">Hình ảnh</label>
-                            <input type="file" id="product-image" name="product-image" class="form-control">
-                            <div class="image-box"></div>
-                        </div>
-                        <!-- end of 1st column -->
-                        
-                        <!-- start of 2nd column -->
-                        <div class="col">                            
-                           
-                            <label for="product-description" class="form-label">Mô tả</label>
-                            <textarea id="product-description" class="form-control"></textarea>
-
-                        </div>
-                        <!-- end of 2nd column -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-cancel admin" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit " class="btn btn-confirm admin">Thêm mới</button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
+<link rel="stylesheet" href="addproductmanagement.css" /> 
+<div class="container">
+  <form action="Processing.php" method="post" enctype="multipart/form-data">
+    <div class="row">
+    <h1 class="modal-title fs-5" id="add-product">Thêm mới sản phẩm</h1>
+      <div class="col-25">
+        <label for="fname">Tên Sản Phẩm</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="fname" name="firstname" placeholder="Tên hoa">
+      </div>
     </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="product-price" name="product-price">Giá</label>
+      </div>
+      <div class="col-75">
+        <input type="number" id="product-price" name="product-price" placeholder="bao nhiêu tiền...">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="product-name">Hình ảnh</label>
+      </div>
+      <div class="col-75">
+      <input type="file" id="product-name" name="product-image" class="form-control">
+                            <div class="image-box"></div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-25">
+        <label for="Kích thước">Kích thước</label>
+      </div>
+      <div class="col-75">
+        <select id="country" name="country">
+          <option value="Vừa">Vừa</option>
+          <option value="Nhỏ">Nhỏ</option>
+          <option value="Lớn">Lớn</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="Mô tả">Mô tả</label>
+      </div>
+      <div class="col-75">
+        <textarea id="subject" name="subject" placeholder="Viết gì đó..." style="height:200px"></textarea>
+      </div>
+    </div>
+    
+    <div class="row">
+      <input type="submit" value="ADD New Product" name="action">
+      <input type="submit" class= "Huy" value="Hủy thêm sản Phẩm" name="action">
+    </div>
+  </form>
 </div>
-<!-- end of Modal of Add new elements-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Get the form and the cancel button
+      var form = document.querySelector('form');
+      var cancelButton = document.querySelector('.Huy');
+
+      // Store the initial values when the page loads
+      var initialValues = {
+        fname: document.getElementById('fname').value,
+        lname: document.getElementById('lname').value,
+        country: document.getElementById('country').value,
+        subject: document.getElementById('subject').value
+      };
+
+      // Function to reset values to their initial state
+      function resetForm() {
+        document.getElementById('fname').value = initialValues.fname;
+        document.getElementById('lname').value = initialValues.lname;
+        document.getElementById('country').value = initialValues.country;
+        document.getElementById('subject').value = initialValues.subject;
+        // You may need to handle the file input separately as browsers have security restrictions for setting its value
+        // document.getElementById('product-name').value = '';
+      }
+
+      // Attach a click event listener to the cancel button
+      cancelButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        resetForm();
+      });
+
+      // Optional: If you want to reset the form when the form is submitted
+      form.addEventListener('submit', function () {
+        resetForm();
+      });
+    });
+  </script>

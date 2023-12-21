@@ -44,7 +44,9 @@
 
     <!-- show cac san pham-->
 <?php
-function displayProductTable($searchKeyword = '') {
+
+function displayProductTable($searchKeyword = '',$selectedCategory) {
+    echo $selectedCategory;
     // Kết nối đến cơ sở dữ liệu
     ?>
     <div class="table-container">
@@ -59,7 +61,15 @@ function displayProductTable($searchKeyword = '') {
         die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
     }
     // Truy vấn SQL để lấy dữ liệu
-    $sql = "SELECT id,name,gia FROM ttsp";
+    if($selectedCategory=="tất cả")
+    {
+
+        $sql = "SELECT id,name,gia,image FROM ttsp ";
+    }
+    else
+    {
+        $sql = "SELECT id,name,gia,image FROM ttsp where category='$selectedCategory'";
+    }   
     $result = $conn->query($sql);
     $columnCount = 0; // Đếm số cột đã thêm vào hàng
     if ($result->num_rows > 0) {
@@ -73,14 +83,14 @@ function displayProductTable($searchKeyword = '') {
                 echo "<td>";
                 ?>
                 <div class="form_sp">
-                    <form action="Processing_Info_Or_Delete.php" method="POST">
+                    <form action="Processing.php" method="POST">
                         <!--<img class="sp-image" src="img/ <?php echo $row["id"] ; ?>" alt="Mô tả hình ảnh">-->
-                        <button type="submit" name="action" value="Xem" style="background-image: url('img/<?php echo $row["id"]; ?>'); background-size: cover; width: 150px; height: 150px;">
+                        <button type="submit" name="action" value="Xem" style="background-image: url('img/<?php echo $row["image"]; ?>'); background-size: cover; width: 150px; height: 150px;">
                             <span style="display: none;"><?php echo $row["name"] ; ?></span>
                         </button>
                         <label class="sp-label" for="inputData"><?php echo $row["name"] ; ?></label>
                         <label class="sp-price" for="inputData"><?php echo $row["gia"] ; ?></label>
-                        
+                        <input type="hidden" name="image" value="<?php echo $row['image']; ?>">
                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                     </form>
                 </div>
@@ -102,8 +112,20 @@ function displayProductTable($searchKeyword = '') {
     $conn->close();
 }
 $searchKeyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
-displayProductTable($searchKeyword);
+$selectedCategory = isset($_COOKIE['selectedCategory']) ? $_COOKIE['selectedCategory'] : 'tất cả';
+displayProductTable($searchKeyword,$selectedCategory );
+//if(isset($_POST['category'])) {
+    // Sanitize the input to prevent SQL injection
+//    $category = htmlspecialchars($_POST['category']);
 
+    // You can use $category in your further processing, such as querying the database or performing any other actions.
+    
+    // For example, echoing the selected category for demonstration purposes:
+//    echo "Selected category: " . $category;
+//} else {
+    // If category is not set in the POST data, handle the error or redirect as needed.
+//    echo "Category not set in the POST data";
+//}
 // To use the function
 
 ?>

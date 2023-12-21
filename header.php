@@ -1,20 +1,41 @@
+<?php 
+    //include('account.php');
+    session_start();    
+    $acc = isset($_SESSION['acc']) ? $_SESSION['acc'] : null;
+// Kết nối đến cơ sở dữ liệu
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "flower";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Kết nối không thành công: " . $conn->connect_error);
+}
+
+// Thực hiện câu lệnh SQL SELECT để lấy danh mục
+$sql = "SELECT DISTINCT category FROM ttsp";
+$result = $conn->query($sql);
+
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styleheader.css"> <!-- Đường dẫn tới file CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
+    <link rel="stylesheet" href="1.css"> <!-- Đường dẫn tới file CSS -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+-->
     <title>Dropdown Example</title>
     <!-- icon -->
     <script type="module" src="https://unpkg.com/ionicsons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <link rel="shortcut icon" href="image/logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>  <!--sài cho click dô danh mục -->
+</head>
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
         <div class="container-fluid">
@@ -29,18 +50,28 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="Product.php" role="button" data-bs-toggle="dropdown">Sản phẩm</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Link</a></li>
-                        <li><a class="dropdown-item" href="#">Another link</a></li>
-                        <li><a class="dropdown-item" href="#">A third link</a></li>
+                        <?php
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $categoryName = $row['category'];
+                                echo "<li><a class='dropdown-item' href='#' onclick='showAlertAndSend(\"$categoryName\")'>$categoryName</a></li>";
+                            }
+                            $categoryName = 'tất cả';
+                            echo "<li><a class='dropdown-item' href='#' onclick='showAlertAndSend(\"$categoryName\")'>$categoryName</a></li>";
+                        }
+                        ?>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Vechungtoi.php">Về chúng tôi</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Lienhe.php">Liên hệ</a>
+                    <a class="nav-link" href="contact_us.php">Liên hệ</a>
                 </li>
-
+                <form id="searchForm" action="#" method="get" class="right-col flex ">
+                    <input class="form-control me-2" type="text" id="searchInput" name="keyword" placeholder="Tìm kiếm sản phẩm" value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>">
+                    <i class="fa-solid fa-magnifying-glass fa-2x" style="color: white"></i>
+                </form>
                 <script>
                     $(document).ready(function() {
                         // Gắn sự kiện submit cho biểu mẫu
@@ -50,48 +81,43 @@
 
                             // Cập nhật giá trị của trường nhập liệu
                             $('#searchInput').attr('value', searchKeyword);
+
                         });
                     });
                 </script>
-                <!-- // dang nhap dang ky -->
-                <ul class="navbar-nav" style="position: relative;">
-                    <div class="nav-item dropdown" style="position: absolute; left: 500px;">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="account_icon.png" alt="User Icon" style="width: 40px; height: 40px;">
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="login.PHP">đăng nhập</a></li>
-                            <li><a class="dropdown-item" href="dktk.php">đăng ký</a></li>
-                        </ul>
-                    </div>
-                </ul>
+        <script>
+function showAlertAndSend(categoryName) {
+    alert("Bạn đã chọn danh mục: " + categoryName);
+    document.cookie = "selectedCategory=" + categoryName;
 
+    // Redirect to Product.php
+    window.location.href = "Product.php";
+}
+    </script>
                 <div class=headericon>
-                    <form id="searchForm" action="#" method="get" class="right-col flex " >
-                        <input class="form-control me-2" type="text" id="searchInput" name="keyword" placeholder="Tìm kiếm sản phẩm" value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>">
-                        <i class="fa-solid fa-magnifying-glass fa-2x" style="color: white"></i>
-                    </form>
                     <i class="fa-regular fa-heart fa-2x" style="color: white" ;></i>
-                    <a href="Giohang.php" class="cart-link"  >
-                        <i class="fa-solid fa-cart-shopping fa-2x" style="color: white;" ></i>
+                    <a href="Giohang.php" class="cart-link" >
+                        <i class="fa-solid fa-cart-shopping fa-2x" style="color: white"></i>
                     </a>
-                    
-                     <!-- <a href="login.php" class="cart-link1" style="margin-right: 500px;">
-                        <i class="fa-regular fa-user fa-2x" style="color: white"></i>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">đăng nhập</a></li>
-                            <li><a class="dropdown-item" href="#">đăng ký</a></li>
+                        <li class="nav-item dropdown">
+                        <a class="fa-regular fa-user fa-2x"role="button" data-bs-toggle="dropdown" style="color: white"></a>
+                        <ul class="dropdown-menu"> 
+                        <?php if ($acc): ?>
+                                <li><a class="dropdown-item-ad" href="login.php"><?php echo $acc ?></a></li>
+                            <?php else: ?>
+                                <li><a class="dropdown-item-ad" href="login.php">đăng nhập</a></li>
+                            <?php endif; ?>
+                            <li><a class="dropdown-item-ad" href="dktk.php">Đăng ký</a></li>
+                            <li><a class="dropdown-item-ad" href="login.PHP">Đăng xuất</a></li>
+                            <li><a class="dropdown-item-ad" href="Doimatkhau.php">Đổi mật khẩu</a></li>
+                            <li><a class="dropdown-item-ad" href="Thongtintaikhoan.php">thông tin tài khoản</a></li>
                         </ul>
-                    </a>-->
-                    
+                        </li>
                 </div>
             </ul>
         </div>
     </nav>
     </div>
-
-
-
     <div id="demo" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ul class="carousel-indicators">
