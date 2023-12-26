@@ -46,7 +46,7 @@
 <?php
 
 function displayProductTable($searchKeyword = '',$selectedCategory) {
-    echo $selectedCategory;
+    //echo $selectedCategory;
     // Kết nối đến cơ sở dữ liệu
     ?>
     <div class="table-container">

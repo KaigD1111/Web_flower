@@ -62,15 +62,15 @@ tr:hover {
                     <span class="material-symbols-outlined">person_outline</span>
                     <h3>Khách hàng</h3>
                 </a>
-                <a href="#">
+                <a href="admin_kho.php">
                     <span class="material-symbols-outlined">insights</span>
-                    <h3>Phân tích</h3>
+                    <h3>Kho hàng</h3>
                 </a>
                 <a href="mess.php">
                     <span class="material-symbols-outlined">mail_outline</span>
                     <h3>Tin nhắn</h3>
                 </a>
-                <a href="#" class="active">
+                <a href="admin_product.php" class="active">
                     <span class="material-symbols-outlined">receipt_long</span>
                     <h3>Sản phẩm</h3>
                 </a>
@@ -86,11 +86,11 @@ tr:hover {
                     <span class="material-symbols-outlined">Settings</span>
                     <h3>Cài đặt</h3>
                 </a>
-                <a href="#">
+                <a href="them_moi_san_pham.php">
                     <span class="material-symbols-outlined">add</span>
                     <h3>Thêm sản phẩm</h3>
                 </a>
-                <a href="#">
+                <a href="login.php">
                     <span class="material-symbols-outlined">logout</span>
                     <h3>Đăng xuất</h3>
                 </a>
@@ -131,17 +131,17 @@ tr:hover {
                                 die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
                             }
 
-                            $sql = "SELECT id,name, gia, category FROM ttsp";
+                            $sql = "SELECT id,name, gia,image,category FROM ttsp";
                             $result = $conn->query($sql);
 
                             if ($result->num_rows > 0) {
+                                $stt=0;
                                 while ($row = $result->fetch_assoc()) {
                                     ?>
                                     <tr>
-                                        <td>1</td>
+                                        <td><?php echo $stt;?></td>
                                         <td><?php echo $row["name"]; ?></td>
-                                        
-                                        <td><img width='100' src='img\<?php echo $row["id"]; ?>' alt="hoa1"></td>
+                                        <td><img width='100' src='img\<?php echo $row["image"]; ?>' alt="hoa1"></td>
                                         <td><?php echo $row["gia"]; ?></td>
                                         <td><?php echo $row["category"]; ?></td>
                                         <td>
@@ -156,6 +156,7 @@ tr:hover {
                                         </form>
                                         </td>
                                     </tr>
+                                    <?php $stt+=1;?>
                                     <?php
                                 }
                             }

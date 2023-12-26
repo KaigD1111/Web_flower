@@ -476,11 +476,11 @@ main .recent_order a {
                     <span class="material-symbols-outlined">person_outline</span>
                     <h3>Khách hàng</h3>
                 </a>
-                <a href="#">
+                <a href="admin_kho.php">
                     <span class="material-symbols-outlined">insights</span>
-                    <h3>Phân tích</h3>
+                    <h3>Kho hàng</h3>
                 </a>
-                <a href="#">
+                <a href="mess.php">
                     <span class="material-symbols-outlined">mail_outline</span>
                     <h3>Tin nhắn</h3>
                 </a>
@@ -488,7 +488,12 @@ main .recent_order a {
                     <span class="material-symbols-outlined">receipt_long</span>
                     <h3>Sản phẩm</h3>
                 </a>
-                <a href="#">
+                </a>
+                <a href="admin_order.php" class="">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                    <h3>Đơn hàng</h3>
+                </a>
+                <a href="admin_kho.php">
                     <span class="material-symbols-outlined">report_gmailerrorred</span>
                     <h3>Thống kê</h3>
                 </a>
@@ -496,11 +501,11 @@ main .recent_order a {
                     <span class="material-symbols-outlined">Settings</span>
                     <h3>Cài đặt</h3>
                 </a>
-                <a href="#">
+                <a href="them_moi_san_pham.php">
                     <span class="material-symbols-outlined">add</span>
                     <h3>Thêm sản phẩm</h3>
                 </a>
-                <a href="#">
+                <a href="login.php">
                     <span class="material-symbols-outlined">logout</span>
                     <h3>Đăng xuất</h3>
                 </a>
@@ -557,7 +562,7 @@ main .recent_order a {
                                         <td>
                                         <form action="processing.php" method="post">
                                             <input type="hidden" name="id_user_delete" value="<?php echo $row["id"]; ?>">
-                                            <button type="submit" name="action" value="delete_user" class="button delete_button" onclick="return confirm('Are you sure you want to delete this user?')">delete</button>
+                                            <button type="submit" name="action" value="delete_user" class="button delete_button" onclick="return confirm('bạn có chắc xóa người dùng này')">delete</button>
                                         </form>
                                             <button class="button edit_button">edit</button>
                                             

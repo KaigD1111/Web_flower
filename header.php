@@ -1,7 +1,7 @@
 <?php 
-    //include('account.php');
-    session_start();    
-    $acc = isset($_SESSION['acc']) ? $_SESSION['acc'] : null;
+//include('account.php');
+session_start();    
+$acc = isset($_SESSION['acc']) ? $_SESSION['acc'] : null;
 // Kết nối đến cơ sở dữ liệu
 $servername = "localhost";
 $username = "root";
@@ -94,23 +94,41 @@ function showAlertAndSend(categoryName) {
     window.location.href = "Product.php";
 }
     </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    var cartLink = document.getElementById("cartLink");
+
+    // Gắn sự kiện click cho liên kết giỏ hàng
+    cartLink.addEventListener("click", function(event) {
+        // Lấy giá trị của $acc từ PHP và kiểm tra
+        var accValue = <?php echo json_encode($acc); ?>;
+        
+        // Nếu $acc là null, ngăn chặn chuyển hướng và hiển thị cảnh báo
+        if (!accValue) {
+            alert("Vui lòng đăng nhập trước khi xem giỏ hàng.");
+            event.preventDefault(); // Ngăn chặn chuyển hướng
+        }
+    });
+});
+</script>
                 <div class=headericon>
                     <i class="fa-regular fa-heart fa-2x" style="color: white" ;></i>
-                    <a href="Giohang.php" class="cart-link" >
+                    <a href="Giohang.php" class="cart-link" id="cartLink">
                         <i class="fa-solid fa-cart-shopping fa-2x" style="color: white"></i>
                     </a>
                         <li class="nav-item dropdown">
                         <a class="fa-regular fa-user fa-2x"role="button" data-bs-toggle="dropdown" style="color: white"></a>
                         <ul class="dropdown-menu"> 
                         <?php if ($acc): ?>
-                                <li><a class="dropdown-item-ad" href="login.php"><?php echo $acc ?></a></li>
+                                <li><a class="dropdown-item-ad" href="login.php"><?php echo"heloo ". $acc ?></a></li>
+                                <li><a class="dropdown-item-ad" href="login.PHP">Đăng xuất</a></li>
+                                <li><a class="dropdown-item-ad" href="Doimatkhau.php">Đổi mật khẩu</a></li>
+                                <li><a class="dropdown-item-ad" href="Thongtintaikhoan.php">Thông tin tài khoản</a></li>
                             <?php else: ?>
-                                <li><a class="dropdown-item-ad" href="login.php">đăng nhập</a></li>
+                                <li><a class="dropdown-item-ad" href="login.php">Đăng nhập</a></li>
+                                <li><a class="dropdown-item-ad" href="ĐK.php">Đăng ký</a></li>
                             <?php endif; ?>
-                            <li><a class="dropdown-item-ad" href="dktk.php">Đăng ký</a></li>
-                            <li><a class="dropdown-item-ad" href="login.PHP">Đăng xuất</a></li>
-                            <li><a class="dropdown-item-ad" href="Doimatkhau.php">Đổi mật khẩu</a></li>
-                            <li><a class="dropdown-item-ad" href="Thongtintaikhoan.php">thông tin tài khoản</a></li>
+                           
                         </ul>
                         </li>
                 </div>

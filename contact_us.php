@@ -61,7 +61,39 @@
                 top: 80%;
             }
         }
+        .alert {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+      .closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.closebtn:hover {
+  color: black;
+}
+
+.alert {
+  opacity: 1;
+  transition: opacity 0.6s; /* 600ms to fade out */
+}
     </style>
+    <?php  
+#include('account.php');
+#echo $acc;
+// Truy cập giá trị của biến toàn cục $acc
+//$accc = $_SESSION['acc'];
+//echo $accc;
+include('header.php');
+?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -79,6 +111,18 @@
 </head>
 
 <body>
+    <?php 
+$status = isset($_GET['status']) ? $_GET['status'] : '';
+if ($status === 'guitinthanhcong') {
+    ?>
+            <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        gửi tin nhắn cho admin thành công
+      </div>
+
+<?php
+} 
+?>
     <div class="container">
         <div class="row">
             <div class="col-md-7">
@@ -101,7 +145,7 @@
                         <label for="message" class="form-label">Nội dung</label>
                         <textarea class="form-control" id="message" name="message" rows="3"></textarea>
                     </div>
-                    <button type="submit" name="action" value="gửi tin nhắn" class="btn btn-primary">GỬII</button>
+                    <button type="submit" name="action" value="gửi tin nhắn" class="btn btn-primary">GỬI</button>
                 </form>
             </div>
             <div class="col-md-5">
@@ -140,6 +184,4 @@
         // Your existing script
     </script>
 </body>
-
-
 </html>

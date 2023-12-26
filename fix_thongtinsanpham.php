@@ -65,7 +65,7 @@ body {
 ion-icon[name="close-outline"] {
         position: absolute; /* Set the position of the close icon to absolute */
         top: 0; /* Position it at the top of the container */
-        right: 180px; /* Position it at the left of the container */
+        right: 220px; /* Position it at the left of the container */
         margin: 10px; /* Add some margin for spacing */
         font-size: 24px; /* Adjust the font size of the close icon */
         cursor: pointer; /* Add cursor pointer for interaction */
@@ -140,12 +140,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
     <h3>CẬP NHẬT THÔNG TIN SẢN PHẨM</h3>
   <ion-icon name="close-outline"></ion-icon>
+  <script>
+  // Add an event listener to the ion-icon for the close button
+  document.getElementById('closeIcon').addEventListener('click', function() {
+    // Perform any actions you want before closing the page (if needed)
+    // Close the page
+    window.close();
+  });
+</script>
+<script>
+    // Get the input element for price
+    var priceInput = document.getElementById('lname');
+
+    // Get the update button element
+    var updateButton = document.querySelector('button[name="action"][value="update infomation product"]');
+
+    // Add an input event listener to the price input
+    priceInput.addEventListener('input', function () {
+        // Check if the price is greater than 0
+        if (parseFloat(priceInput.value) > 0) {
+            // Enable the update button
+            updateButton.disabled = false;
+        } else {
+            // Disable the update button
+            updateButton.disabled = true;
+        }
+    });
+</script>
     <div class="row">
       <div class="col-25">
         <label for="fname">Tên Sản Phẩm</label>
       </div>
       <div class="col-75">
-        <input type="text" id="fname" name="name" placeholder=<?php echo $name ?>>
+        <input type="text" id="fname" name="name" value="<?php echo $name ?>" placeholder=<?php echo $name ?>>
       </div>
     </div>
     <div class="row">
@@ -153,9 +180,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="lname">Giá</label>
       </div>
       <div class="col-75">
-        <input type="number" id="lname" name="price" value = '<?php echo $gia ?>' placeholder="Giá">
+        <input type="number" id="lname" name="price"   value="<?php echo $gia ?>" placeholder=<?php echo $gia ?>>
       </div>
     </div>
+    
     <div class="row">
       <div class="col-25">
         <label for="lname">Hình ảnh</label>
@@ -184,27 +212,91 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="Danh mục sản phẩm">Danh mục sản phẩm</label>
       </div>
       <div class="col-75">
-        <select id="product" name="category">
-          <option value="Hoa tươi">Hoa tươi</option>
-          <option value="Nhỏ">Nhỏ</option>
-          <option value="Lớn">Lớn</option>
-        </select>
-        <input type="text" id="fname" name="category" placeholder="danh mục mới ">
+
+        <input type="text" id="fname" name="category" value="<?php echo $category ?>" placeholder="<?php echo $category ?>">
       </div>
     </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="Danh mục sản phẩm">Thêm vào kho</label>
+      </div>
+      <div class="col-75">
+            <select id="product" name="kho">
+            <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "flower";
+
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            if ($conn->connect_error) {
+                die("Kết nối không thành công: " . $conn->connect_error);
+            }
+
+            $sql = "SELECT * FROM kho";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                  $id_kho=$row['id_kho'];
+                    ?>
+                    <option value="<?php echo $row['id_kho']; ?>">
+                        <?php echo $row['id_kho']; ?>
+                    </option>
+                    <?php
+                }
+            }
+            ?>
+        </select>
+          <div class="row">
+          <div class="col-25">
+            <?php
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "flower";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+            die("Kết nối không thành công: " . $conn->connect_error);
+        }
+
+        // Assuming your table is named 'products', adjust it accordingly
+        $sql = "SELECT sl_in_kho FROM chitiet_kho WHERE id_of_kho = '$id_kho'";
+        $result = $conn->query($sql);
+      
+        if ($result->num_rows > 0) {
+            // Fetch the product information
+           
+            while ($row = $result->fetch_assoc()) 
+            {
+            $sl=$row['sl_in_kho'];
+            }
+            
+        }
+        $conn->close();
+            ?>
+            <label for="fname">Số lượng trong kho</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="fname" name="sl_in_kho" placeholder="<?php echo "" ?>">
+          </div>
+        </div>
     <div class="row">
       <div class="col-25">
         <label for="Mô tả">Mô tả</label>
       </div>
       <div class="col-75">
-        <textarea id="subject" name="subject" placeholder="Viết gì đó..." style="height:200px"></textarea>
+        <textarea id="subject" name="subject" value="<?php echo $mota ?>" placeholder="Viết gì đó..." style="height:200px"></textarea>
       </div>
     </div>
     
     <div class="row">
       <input type="hidden"  value='<?php echo $id?>' name="id_product_update">
-      <input type="submit" class="Add" value="update infomation product" name="action">
-      <input type="submit" class= "Huy" data-real-value="Hủy" value="Hủy cập nhật sản Phẩm" name="action">
+      <button type="submit" class="Add" value="update infomation product" name="action">Cập nhật</button>
+     <button type="submit" class= "Huy" data-real-value="Hủy" value="Hủy cập nhật sản Phẩm" name="action">Hủy</button>
     </div>
   </form>
 </div>

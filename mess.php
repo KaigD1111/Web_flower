@@ -479,9 +479,9 @@ main .recent_order a {
                     <span class="material-symbols-outlined">person_outline</span>
                     <h3>Khách hàng</h3>
                 </a>
-                <a href="#">
+                <a href="admin_kho.php">
                     <span class="material-symbols-outlined">insights</span>
-                    <h3>Phân tích</h3>
+                    <h3>Kho hàng</h3>
                 </a>
                 <a href="mess.php" class="active">
                     <span class="material-symbols-outlined">mail_outline</span>
@@ -491,19 +491,19 @@ main .recent_order a {
                     <span class="material-symbols-outlined">receipt_long</span>
                     <h3>Sản phẩm</h3>
                 </a>
-                <a href="#">
+                <a href="admin_order.php">
                     <span class="material-symbols-outlined">report_gmailerrorred</span>
-                    <h3>Thống kê</h3>
+                    <h3>Đơn hàng</h3>
                 </a>
                 <a href="#">
                     <span class="material-symbols-outlined">Settings</span>
                     <h3>Cài đặt</h3>
                 </a>
-                <a href="#">
+                <a href="them_moi_san_pham.php">
                     <span class="material-symbols-outlined">add</span>
                     <h3>Thêm sản phẩm</h3>
                 </a>
-                <a href="#">
+                <a href="login.php">
                     <span class="material-symbols-outlined">logout</span>
                     <h3>Đăng xuất</h3>
                 </a>
@@ -514,14 +514,16 @@ main .recent_order a {
 
             <!--start recent order-->
             <div class="recent_order">
-                <h1>Danh sách Khách hàng</h1>
+                <h1>Danh sách tin nhắn</h1>
                 <table>
                     <thead>
                         <tr>
                             <th>STT </th>
                             <th>id khach hang </th>
                             <th></th>
+                            <th></th>
                             <th>Action </th>
+                            <th></th>
                             <th>trả lời </th>
                         </tr>
                     </thead>
@@ -545,29 +547,35 @@ main .recent_order a {
 
                         if ($result->num_rows > 0) 
                         {
-
+                            $stt=0;
                             while ($row = $result->fetch_assoc()) 
                             {
                             ?>
                             <tr>
-
                                 <td><?php echo $rowCount ?></td>
-                                <td> 
+
+                                <td><?php echo $row['id_acc_send'] ?></td>
+                                <td><?php echo "" ?></td>
+                                <td>
                                 <form action="processing.php" method="post">
-                                    <input type="hidden" name="id_acc_send" value="<?php echo $row['id_acc_send']; ?>">
-                                    <button type="submit" name="action" value="delete_chat" class="button delete_button" onclick="return confirm('Are you sure you want to delete this other?')">deletemn </button>
+
                                 </form>
                                 </td>
-                                <td><?php echo $row['id_acc_send'] ?></td>
+                                <td>
+                                <form action="processing.php" method="post">
+                                <input type="hidden" name="id_acc_send" value="<?php echo $row['id_acc_send']; ?>">
+                                <button type="submit" name="action" value="delete_chat" class="button delete_button" onclick="return confirm('bạn có chắc xóa tin nhắn này?')">delete</button>
+                                </form>
+                                </td>
                                 <td><form id="searchForm" action="#" method="get" class="right-col flex "></td>
 
                                 <td><input class="form-control me-2" type="text" id="searchInput" name="keyword" placeholder="e bà xieeng " value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>"></td>
                                 <i class="fa-solid fa-magnifying-glass fa-2x" style="color: white"></i>
                                 <td>
-                                    <button class="button" onclick="showMessagesForm(<?php echo strval($row['id_acc_send']) ?>)">Xem tin nhắn</button>
+                                    <button class="button" onclick="showMessagesForm(<?php echo $stt?>)">Xem tin nhắn</button>
                                 </td>
                                 <td>
-                                <div id="messagesForm<?php echo strval($row['id_acc_send']) ?>" class="hidden">
+                                <div id="messagesForm<?php echo $stt?>" class="hidden">
                                     <h2>Form Xem tin nhắn</h2>
                                     <?php
                                     $sql_mess = "SELECT content FROM chat where id_acc_send='{$row['id_acc_send']}'";
@@ -588,24 +596,31 @@ main .recent_order a {
                                     <!-- Add your form elements for viewing messages here -->
                                 </div>
                                 </td>
-
+                                <?php $stt+=1?>
                             </tr>
+
                             <?php $rowCount=$rowCount+1?>
 
-                        <?php }} ?>
+                        <?php }
+                    } ?>
  
                     </tbody>
                 </table>
             </div>
 
+            <script>
+    function showMessagesForm(stt) {
+        alert("Xem tin nhắn button clicked!" +'#messagesForm' + stt);
+        var messagesForm = document.querySelector('#messagesForm' + stt);
+        messagesForm.classList.toggle('hidden');
+    }
+</script>
 <script>
-        function showMessagesForm(row) {
-            row = row.toString(); 
-            alert("Xem tin nhắn button clicked!" + row);
-            var messagesForm = document.querySelector('#messagesForm'+row);
-            messagesForm.classList.toggle('hidden');
-        }
-    </script>
+    function hideMessagesForm(id) {
+        var form = document.getElementById('messagesForm' + id);
+        form.style.display = 'none';
+    }
+</script>
 
             <!--end recent order-->
         </main>

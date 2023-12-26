@@ -77,6 +77,7 @@ body {
     </style>
 </head>
 <body>
+    
 <?php
         session_start();
         // Truy cập giá trị của biến toàn cục $acc
@@ -93,7 +94,7 @@ body {
                 die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
             }
 
-            $sql = "SELECT id,name,phone,mail,address FROM client where id=$acc";
+            $sql = "SELECT id,name,phone,mail,address FROM client where id='$acc'";
             $result = $conn->query($sql);
             
             if ($result->num_rows > 0) {
@@ -143,7 +144,9 @@ body {
     <div class="button-container" >
     <button type="submit" name="action" value="go_change_pass" >Đổi mật khẩu</button>
     <button type="submit" name="action" value="go_fix_info" >Sửa thông tin</button>
-    <button type="submit" name="action" value="go_delete_acc" >Xóa tài khoản</button>
+    
+    <button type="submit" name="action" value="kiểm tra hóa đơn" >Kiểm tra hóa đơn</button>
+    <button type="submit" name="action" value="Về trang chủ" >Về trang chủ</button>
 </div>
 
 </form>

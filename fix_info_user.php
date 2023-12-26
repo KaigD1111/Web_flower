@@ -68,7 +68,7 @@
         <ion-icon name="close-outline"></ion-icon>
 <div class="mb-3 mt-3">
     <label for="name" class="form-label">Họ và tên:</label>
-    <input type="name" class="form-control" name="hoten" id="name" placeholder="Họ và tên" name="name">
+    <input type="name" class="form-control" name="ten" id="name" placeholder="Họ và tên" name="name">
 </div>
 <div class="mb-3 mt-3">
     <label for="name" class="form-label">Địa chỉ:</label>

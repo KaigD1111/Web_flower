@@ -40,7 +40,7 @@
                     <span class="material-symbols-outlined">person_outline</span>
                     <h3>Khách hàng</h3>
                 </a>
-                <a href="admin_kho.php">
+                <a href="" class="active">
                     <span class="material-symbols-outlined">insights</span>
                     <h3>Kho hàng</h3>
                 </a>
@@ -52,7 +52,7 @@
                     <span class="material-symbols-outlined">receipt_long</span>
                     <h3>Sản phẩm</h3>
                 </a>
-                <a href="admin_order.php" class="active">
+                <a href="admin_order.php" >
                     <span class="material-symbols-outlined">receipt_long</span>
                     <h3>Đơn hàng</h3>
                 </a>
@@ -81,24 +81,25 @@
 
             <!--start recent order-->
             <div class="recent_order">
-                <h1>Đơn hàng</h1>
+                <h1>Quản lý kho </h1>
                 <table>
                     <thead>
                         <tr>
                             
-                            <th>Mã đơn hàng </th>
+                            <th>MÃ kho </th>
                             <th>Địa chỉ</th>
-                            <th>Ngày đặt hàng</th>
+                            <th>Tên kho</th>
                             
                             <th>Trạng thái</th>
-                            <th>xem chi tiết</th>
-                            <th>xóa</th>
+    
+                            <th>Xóa</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
                     <tbody>
                     <div class="recent_order">
-                    <h1>Danh sách đơn hàng</h1>
+                    <h1>Danh sách nhà kho</h1>
                         <?php
                             $columnCount = 0;
                             // Kết nối đến cơ sở dữ liệu để tạo gỏ hàng 
@@ -113,7 +114,7 @@
                                 die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
                             }
 
-                            $sql = "SELECT * FROM `order`";
+                            $sql = "SELECT * FROM `kho`";
                             $result = $conn->query($sql);
                             $stt=0;
 
@@ -123,60 +124,26 @@
                                     ?>
                                     <tr>
                                        
-                                        <td><?php echo $row["id"]; ?></td>
-                                        <td><?php echo $row["address"]; ?></td>
-                                        <td><?php echo $row["date"]; ?></td>
-                                        
-                                        <td><?php echo $row["status"]; ?></td>
-                                        <td>
-                                            <button class="button" onclick="showMessagesForm(<?php echo $stt?>)">Xem chi tiết </button>
-                                        </td>
+                                        <td><?php echo $row["id_kho"]; ?></td>
+                                        <td><?php echo $row["address_kho"]; ?></td>
+                                        <td><?php echo $row["name"]; ?></td>
+
+                                        <td><?php echo $row["state"]; ?></td>
+
                                         <td>
                                         <form action="processing.php" method="post">
-                                            <input type="hidden" name="id_order_delete" value="<?php echo $row["id"]; ?>">
-                                            <button type="submit" name="action" value="delete_order" class="button delete_button" onclick="return confirm('Are you sure you want to delete this other?')">delete</button>
+                                            <input type="hidden" name="id_kho" value="<?php echo $row["id_kho"]; ?>">
+                                            <button type="submit" name="action" value="delete_kho" class="button delete_button" onclick="return confirm('bạn có chắc xóa kho hàng này')">Xóa</button>
                                         </form>
                                         </td>
                                         <td>
-                                        <div id="messagesForm<?php echo $stt?>" class="hidden">
-                                            <h2>Xem chi tiết hóa đơn</h2>
-                                            <?php
-                                            $conn_detail = new mysqli($servername, $username, $password, $dbname);
-                                            #$sql_detail_hd = "SELECT id_product , number_product FROM 'detail_order' where id='{$row['id']}'";
-                                            #$result_detail_hd = $conn->query($sql_detail_hd);
-                                            $query = "
-                                                SELECT order.id as id_order,ttsp.id as id_product,detail_order.number_product as number_product 
-                                                ,order.id_cus as id_KH , client.name as name_KH ,ttsp.name as name_sp , ttsp.gia as gia,ttsp.image as image
-                                                
-                                                FROM detail_order
-                                                INNER JOIN `order` ON detail_order.id_order = `order`.id
-                                                INNER JOIN ttsp ON detail_order.id_product = ttsp.id
-                                                INNER JOIN client ON client.id = order.id_cus 
-                                                where order.id='{$row['id']}'";
-                                                $result_query = $conn_detail->query($query);
-                                                if ($result_query->num_rows > 0) {
+                                        <form action="xem_va_sua_kho.php" method="post">
+                                            <input type="hidden" name="id_kho" value="<?php echo $row["id_kho"]; ?>">
+                                            <button type="submit"  class="button" name="action" value="fix_kho"  onclick="return confirm('Are you sure you want to view this other?')">Xem và Sửa</button>
+                                        </form>
+                                        <td>
+                                        </td>
 
-                                                   
-                                                    $tongtien = 0;
-                                                    while ($row_query = $result_query->fetch_assoc()) {
-                                                        echo '<p>ID Khách hàng: ' . $row_query['id_KH'] . '</p>';
-                                                        echo '<p>Tên Khách hàng: ' . $row_query['name_KH'] . '</p>';
-                                                        echo '<p>Tên Sản phẩm: ' . $row_query['name_sp'] . '</p>';
-                                                        echo '<p>Tên Khách hàng: ' . $row_query['gia'] . '</p>';
-                                                        echo '<p>Giá: ' . $row_query['gia'] . '</p>';
-                                            
-                                                        // Tính tổng tiền
-                                                        $tongtien += (int)$row_query['gia'];
-                                                }
-                                                echo '<p>Tổng tiền: ' . $tongtien . '</p>';
-                                                echo '<button onclick="hideMessagesForm(' . $stt . ')">Đóng</button>';
-                                            }
-                                            #$conn_detail->close();
-                                            ?>
-                                                
-                                            <!-- Add your form elements for viewing messages here -->
-                                            
-                                        </div>
                                         </td>
                                         <?php  $stt = $stt+1 ?>
                                     </tr>
@@ -187,19 +154,20 @@
                             ?>
                     </tbody>
                         <tr>
-                            <td>1</td>
-                            <td>ĐH01</td>
-                            <td>Chi</td>
+                            <td>862f1akj23312d</td>
+                            
                             <td>HCM</td>
-                            <td>17/12/2023</td>
-                            <td>COD</td>
-                            <td>1 hoa hướng dương</td>
-                            <td>150000</td>
-                            <td>Đang vận chuyển</tr>
+                            <td>kho Linh Trung</td>
+                            <td>Đã hủy</tr>
+                            
                         <tr>
                         </tr>
                     </tbody>
                 </table>
+                <a href="taokhohang.php">
+                    <span class="material-symbols-outlined">add</span>
+                    <h3>Thêm kho</h3>
+            </a>
             </div>
             <script>
     function showMessagesForm(stt) {
@@ -241,9 +209,10 @@
 
 
         </div>
-
+        
         <!--end right section-->
     </div>
+    
 </body>
 
 </html>

@@ -11,9 +11,76 @@ function findNumberAfterString($inputString, $searchString) {
 // Xem + Delete SP + thêm vào giỏ
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
-    if ($_POST["action"] === "Xem") { //*********************************************************************************** */
+    if ($_POST["action"] === "sign") {
+    // Thông tin kết nối đến cơ sở dữ liệu
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "flower";
+
+    // Tạo kết nối đến cơ sở dữ liệu
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Kiểm tra kết nối
+    if ($conn->connect_error) {
+        die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
+    }
+
+    // Lấy dữ liệu từ biểu mẫu
+    $id = $_POST["id"]; // mail
+    $name = $_POST["name"];
+    //$sex = $_POST["sex"];
+    $pass=$_POST["pass"];
+    $pass_again=$_POST["pass_again"];
+
+
+    $sql = "SELECT * FROM client WHERE id = '$id'";
+    $result = $conn->query($sql);
+    // Kiểm tra kết quả truy vấn
+    if ($result->num_rows > 0) {
+        // Tên tài khoản đã tồn tại trong bảng "client"
+        header("Location: ĐK.php?status=tentkdatontai");
+        echo "Tên tài khoản đã tồn tại.";
+    } else {
+        // Tên tài khoản chưa tồn tại trong bảng "client"
+        echo "Tên tài khoản có thể sử dụng.";
+    
+
+
+    if ($pass == $pass_again) {
+        
+    //echo "gt :".$sex;
+    // Câu lệnh SQL để thêm dữ liệu
+    $sql = "INSERT INTO client (id, name,pass_word)
+    VALUES ('$id', '$name','$pass')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Dữ liệu đã được thêm thành công";
+        header("Location: ĐK.php?status=dangkithanhcong");
+    } else {
+        echo "Lỗi: " . $conn->error;
+    }
+    }
+    else
+    {
+        header("Location: ĐK.php?status=MK");
+        echo "2 MK không trùng nhau" ;
+    }
+}
+
+    // Đóng kết nối
+    $conn->close();
+    }
+
+
+    if ($_POST["action"] === "Xem" ) { //*********************************************************************************** */
         $id_product = $_POST["id"];
         header("Location: info.php?id=$id_product");
+        exit();
+    }
+    if ($_POST["action"] === "Xem tiếp") { //*********************************************************************************** */
+        $id_product = $_POST["id"];
+        header("Location: product.php?id=$id_product");
         exit();
     }
 
@@ -32,6 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
         header("Location: Doimatkhau.php?id=$id");
     }
+
     if ($_POST["action"] === "change_pass") 
     {
             //include('account.php');
@@ -74,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     
                     $update_password_query = "UPDATE client SET pass_word = '$pass_new' WHERE id = '$acc'";
                     $conn->query($update_password_query);
-
+                    header("Location: login.php?status=doimkthanhcong");
                     echo "Mật khẩu đã được thay đổi thành công!";
                 }
                 #if (password_verify($pass_old, $hashed_password)) {
@@ -86,6 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
                 #    echo "Mật khẩu đã được thay đổi thành công!";
                 else {
+                    header("Location: Doimatkhau.php?status=saioldpass");
                     echo "Mật khẩu cũ không chính xác.";
                 }
             } else {
@@ -131,6 +200,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     // Xử lý trường hợp "pass_old" không tồn tại
                     echo "no id find to update";
                 }
+                $sl = isset($_POST['sl_in_kho']) ? $_POST['sl_in_kho'] : '';
+                $id_kho = isset($_POST['kho']) ? $_POST['kho'] : '';
 
                 $productimage = isset($_POST['product-image']) ? $_POST['product-image'] : '';
                 echo $productimage;
@@ -168,9 +239,109 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 } else {
                     echo "Lỗi cập nhật thông tin: " . $conn->error;
                 }
+                $sql = "INSERT INTO chitiet_kho (id_of_kho, id_sp, sl_in_kho) 
+                VALUES ('$id_kho ', '$id','$sl')";
+                
+                    if ($conn->query($sql) === TRUE) {
+                        echo "Thêm dữ liệu thành công!";
+                        header('Location: admin_product.php?status=đã thêm thanh công');
+                    } 
+                    else {
+                        echo "Lỗi: " . $sql . "<br>" . $conn->error;
+                    }
             
                 $conn->close();
         }
+
+        if ($_POST["action"] === "Cập nhật số lượng")  // cập nhật số lượng
+        {
+                if (isset($_POST["sl"])) {
+                    $sl = $_POST["sl"];
+                } else {
+                    // Xử lý trường hợp "pass_old" không tồn tại
+                    $sl = 0;
+                }
+                if (isset($_POST["id"])) {
+                    $id = $_POST["id"];
+                } else {
+                    // Xử lý trường hợp "pass_old" không tồn tại
+                    $id = 0;
+                }
+
+
+                $id_kho=$_POST["id_kho"];
+
+                $servername = "localhost";
+                $username = "root";
+                $password = "";
+                $dbname = "flower";
+    
+                $conn = new mysqli($servername, $username, $password, $dbname);
+    
+                if ($conn->connect_error) {
+                    die("Kết nối không thành công: " . $conn->connect_error);
+                }
+                $sql = "UPDATE chitiet_kho SET sl_in_kho='$sl' WHERE id_sp='$id' AND id_of_kho='$id_kho'";
+
+                if ($conn->query($sql) === TRUE) {
+                    echo "Cập nhật thông tin thành công";
+                } else {
+                    echo "Lỗi cập nhật thông tin: " . $conn->error;
+                }
+            
+                $conn->close();
+        }
+
+        if ($_POST["action"] === "Cập nhật kho")  // cập nhật số lượng
+        {
+            echo "cập nhật kho";
+                if (isset($_POST["name"])) {
+                    $name = $_POST["name"];
+                } else {
+                    // Xử lý trường hợp "pass_old" không tồn tại
+                    $name = "";
+                }
+                if (isset($_POST["id_kho"])) {
+                    $id_kho = $_POST["id_kho"];
+                } else {
+                    // Xử lý trường hợp "pass_old" không tồn tại
+                    $id_kho = "";
+                }
+                if (isset($_POST["address"])) {
+                    $address = $_POST["address"];
+                } else {
+                    // Xử lý trường hợp "pass_old" không tồn tại
+                    $address = "";
+                }
+                if (isset($_POST["status"])) {
+                    $state = $_POST["status"];
+                } else {
+                    // Xử lý trường hợp "pass_old" không tồn tại
+                    $state  = "";
+                }
+                echo  "name :". $name . $address . "ID".$id_kho;
+                $servername = "localhost";
+                $username = "root";
+                $password = "";
+                $dbname = "flower";
+    
+                $conn = new mysqli($servername, $username, $password, $dbname);
+    
+                if ($conn->connect_error) {
+                    die("Kết nối không thành công: " . $conn->connect_error);
+                }
+                $sql = "UPDATE kho SET id_kho='$id_kho' ,name='$name',address_kho='$address' , state='$state'  WHERE  id_kho='$id_kho'";
+
+                if ($conn->query($sql) === TRUE) {
+                    echo "Cập nhật kho thành công";
+                    header("Location: admin_kho.php");
+                } else {
+                    echo "Lỗi cập nhật thông tin: " . $conn->error;
+                }
+            
+                $conn->close();
+        }
+
 
         if ($_POST["action"] === "fix_info_user") 
         {
@@ -221,6 +392,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
                 if ($conn->query($sql) === TRUE) {
                     echo "Cập nhật thông tin thành công";
+                    header("Location: thongtintaikhoan.php");
                 } else {
                     echo "Lỗi cập nhật thông tin: " . $conn->error;
                 }
@@ -245,6 +417,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         if ($conn->connect_error) {
             die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
         }
+        $sql = "DELETE FROM chitiet_kho WHERE id_sp = '$product_id'";
+        
+        if ($conn->query($sql) === TRUE) {
+            echo "Record deleted sp in kho successfully";
+        } else {
+            echo "Error deleting record: " . $conn->error;
+        }
+
+        $sql = "DELETE FROM cart WHERE id_product = '$product_id'";
+        
+        if ($conn->query($sql) === TRUE) {
+            echo "Record deleted cart  successfully";
+           
+        } else {
+            echo "Error deleting record: " . $conn->error;
+        }
+
+
         $sql = "DELETE FROM ttsp WHERE id = '$product_id'";
         
         if ($conn->query($sql) === TRUE) {
@@ -253,10 +443,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         } else {
             echo "Error deleting record: " . $conn->error;
         }
+
         // ...
     }
-    if ($_POST["action"] === "delete_chat" ) { // * adminmmmmmmmm
-        $acc_send = $_POST["id_acc_send"];
+    if ($_POST["action"] === "delete_kho" ) { // * adminmmmmmmmm
+        $id_kho=$_POST["id_kho"];
+        echo $id_kho;
         $servername = "localhost";
         $username = "root";
         $password = "";
@@ -267,39 +459,88 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         if ($conn->connect_error) {
             die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
         }
-        $sql = "DELETE FROM `chat` WHERE id_acc_send = '$acc_send'";
+        $sql = "DELETE FROM `chitiet_kho` WHERE id_of_kho= '$id_kho'";
         if ($conn->query($sql) === TRUE) {
             echo "Record deleted successfully";
+            //header("Location: mess.php");
+           
             
         } else {
             echo "Error deleting record: " . $conn->error;
         }
         $conn->close();
-    }
-    if ($_POST["action"] === "delete_order" ) { // * adminmmmmmmmm
-        echo "delete_order";
-        $order_id = $_POST["id_order_delete"];
         $servername = "localhost";
         $username = "root";
         $password = "";
         $dbname = "flower";
-        echo $order_id ;
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        $sql = "DELETE FROM `kho` WHERE id_kho= '$id_kho'";
+        if ($conn->query($sql) === TRUE) {
+            echo "Record deleted successfully";
+            //header("Location: mess.php");
+            header('Location: admin_kho.php?status=đã xóa thành công');
+            
+        } else {
+            echo "Error deleting record: " . $conn->error;
+        }
+
+
+        $conn->close();
+    }
+
+    if ($_POST["action"] === "delete_user") {
+        // Your delete logic here
+        $user_id = $_POST["id_user_delete"];
+        echo $user_id;
+        session_start();
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "flower";
+    
         $conn = new mysqli($servername, $username, $password, $dbname);
     
         // Kiểm tra kết nối
         if ($conn->connect_error) {
             die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
         }
-        $sql = "DELETE FROM `order` WHERE id = '$order_id'";
-        if ($conn->query($sql) === TRUE) {
-            $sql = "DELETE FROM detail_order WHERE id_order = '$order_id'";
-            echo "Record deleted successfully";
-            header("Location: admin_order.php");
+    
+        // Xóa chi tiết hóa đơn
+        $sql_delete_detail_order = "DELETE FROM detail_order WHERE id_order IN (SELECT id FROM `order` WHERE id_cus = '$user_id')";
+        if ($conn->query($sql_delete_detail_order) === TRUE) {
+            echo "Records in detail_order deleted successfully";
         } else {
-            echo "Error deleting record: " . $conn->error;
+            echo "Error deleting records in detail_order: " . $conn->error;
         }
+    
+        // Xóa hóa đơn
+        $sql_delete_orders = "DELETE FROM `order` WHERE id_cus = '$user_id'";
+        if ($conn->query($sql_delete_orders) === TRUE) {
+            echo "Records in order deleted successfully";
+        } else {
+            echo "Error deleting records in order: " . $conn->error;
+        }
+    
+        // Xóa dữ liệu từ các bảng khác
+        $sql_delete_chat = "DELETE FROM chat WHERE id_acc_send = '$user_id'";
+        $sql_delete_cart = "DELETE FROM cart WHERE id_acc = '$user_id'";
+        $sql_delete_comment = "DELETE FROM comment WHERE id_cus_comment = '$user_id'";
+        $sql_delete_client = "DELETE FROM client WHERE id = '$user_id'";
+    
+        if ($conn->query($sql_delete_chat) === TRUE &&
+            $conn->query($sql_delete_cart) === TRUE &&
+            $conn->query($sql_delete_comment) === TRUE &&
+            $conn->query($sql_delete_client) === TRUE) {
+            echo "Records in chat, cart, comment, and client deleted successfully";
+            header("Location: danhsachkhachhang.php");
+        } else {
+            echo "Error deleting records: " . $conn->error;
+        }
+    
+        // Đóng kết nối
         $conn->close();
     }
+
     if ($_POST["action"] === "delete_user" ) { // * adminmmmmmmmm
         // Your delete logic here
         $user_id = $_POST["id_user_delete"];
@@ -316,6 +557,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         if ($conn->connect_error) {
             die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
         }
+        $sql = "DELETE FROM detail_order WHERE id_order IN (SELECT id FROM `order` WHERE id_cus = '$user_id')";
+        if ($conn->query($sql) === TRUE) {
+            echo "Records in detail_order deleted successfully";
+        } else {
+            echo "Error deleting records in detail_order: " . $conn->error;
+        }
+        
+        $sql_delete_orders = "DELETE FROM detail_order WHERE id_order IN (SELECT id_order FROM `order` WHERE id_cus = '$user_id')";
+        $sql = "DELETE FROM order WHERE id_cus = '$user_id'";
+        $sql = "DELETE FROM chat WHERE id_acc_send = '$user_id'";
+        $sql = "DELETE FROM cart WHERE id_acc = '$user_id'";
+        $sql = "DELETE FROM comment WHERE id_cus_comment = '$user_id'";
         $sql = "DELETE FROM client WHERE id = '$user_id'";
         
         if ($conn->query($sql) === TRUE) {
@@ -327,8 +580,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         // ...
     }
 
+    if ($_POST["action"] === "delete_order" ) { // * adminmmmmmmmm
+        // Your delete logic here
+        $id_order = $_POST["id_order_delete"];
 
+        session_start();
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "flower";
+    
+        $conn = new mysqli($servername, $username, $password, $dbname);
+    
+        // Kiểm tra kết nối
+        if ($conn->connect_error) {
+            die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
+        }
 
+        
+        
+        $sql = "DELETE FROM detail_order WHERE id_order = '$id_order'";
+
+        if ($conn->query($sql) === TRUE) {
+            echo "Record deleted successfully";
+        } else {
+            echo "Error deleting record: " . $conn->error;
+        }
+        
+        $sql = "DELETE FROM `order` WHERE id = '$id_order'"; // Use backticks around 'order'
+        if ($conn->query($sql) === TRUE) {
+            echo "Record deleted successfully";
+            header("Location: admin_order.php");
+        } else {
+            echo "Error deleting record: " . $conn->error;
+        }
+        // ...
+    }
+    
+    if ($_POST["action"] === "Về trang chủ") 
+    {
+        header("Location: main.php");
+    }
+    if ($_POST["action"] === "Quay về trang chính") 
+    {
+        header("Location: danhsachkhachhang.php");
+    }
+    if ($_POST["action"] === "Đăng xuất") 
+    {
+        session_start();
+        $acc = null;
+        $_SESSION['acc'] = $acc; // Set $_SESSION['acc'] to null
+    }
     if ($_POST["action"] === "LOGIN") 
     {
             //include('account.php');
@@ -345,6 +647,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             if ($conn->connect_error) {
                 die("Kết nối không thành công: " . $conn->connect_error);
             }
+
+
 
             $sql = "SELECT id, pass_word,role FROM client WHERE id = ?";
             $stmt = $conn->prepare($sql);
@@ -376,8 +680,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 } else {
                     
                     echo "Sai mật khẩu";
+                    header("Location: login.php?status=sai");
                 }
             } else {
+                header("Location: login.php?status=sai");
                 echo "Không tìm thấy tên đăng nhập trong cơ sở dữ liệu.";
             }
 
@@ -389,7 +695,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         session_start();
         $id_product = $_POST["id"];
         $acc=$_SESSION['acc'];
-        
+        echo $id_product ;
+        echo "acc :".$acc ;
         // Kết nối đến cơ sở dữ liệu
         $servername = "localhost";
         $username = "root";
@@ -425,56 +732,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         // Đóng kết nối và statement
         $stmt->close();
 
-        header("Location: Giohang.php?id=$id");
+        header("Location: thanhtoan2.php?status=xoaspkhoigiohangthanhcong");
         exit();
     }
 
+
     if ($_POST["action"] === "Xóa giỏ hàng") //**************************************************************************** */
     { 
-        $id = $_POST["id"];
-        $acc=$_POST["acc"];
-
+        session_start();
+        
+        $acc=$_SESSION['acc'];
+        
         // Kết nối đến cơ sở dữ liệu
         $servername = "localhost";
         $username = "root";
         $password = "";
         $dbname = "flower";
-
+        
         $conn = new mysqli($servername, $username, $password, $dbname);
-
+        
         if ($conn->connect_error) {
             die("Kết nối không thành công: " . $conn->connect_error);
         }
-
-        // Lấy giá trị hiện tại của trường 'gio'
-        $sql = "SELECT gio FROM client WHERE id = '$acc'";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $gioHienTai = $row['gio'];
-
-            // Xóa chuỗi con ($id) khỏi chuỗi lớn ($gioHienTai)
-            $gioMoi = str_replace($gioHienTai,'', $gioHienTai);
-
-            // Cập nhật giá trị mới vào cơ sở dữ liệu
-            $sqlUpdate = "UPDATE client SET gio = '$gioMoi' WHERE id = '$acc'";
-
-            if ($conn->query($sqlUpdate) === TRUE) {
-                echo "Giá trị cột 'gio' đã được cập nhật thành công.";
-            } else {
-                echo "Lỗi cập nhật cơ sở dữ liệu: " . $conn->error;
-            }
-        } else {
-            echo "Không tìm thấy id = $id trong cơ sở dữ liệu.";
+        
+        // Truy vấn SQL DELETE
+        $sql = "DELETE FROM cart WHERE id_acc = ?";
+        $stmt = $conn->prepare($sql);
+        
+        // Kiểm tra lỗi truy vấn
+        if ($stmt === false) {
+            die("Lỗi truy vấn: " . $conn->error);
         }
-
-        $conn->close();
+        
+        // Bind các tham số và thực hiện truy vấn
+        $stmt->bind_param("s", $acc);
+        $stmt->execute();
+        
+        // Kiểm tra và thông báo kết quả
+        if ($stmt->affected_rows > 0) {
+            echo "xóa toàn bộ giỏ.";
+        } else {
+            echo "Không có sản phẩm nào được xóa hoặc có lỗi xảy ra.";
+        }
+        
+        // Đóng kết nối và statement
+        $stmt->close();
 
         header("Location: Giohang.php?id=$id");
         exit();
     }
-
+ 
+    if ($_POST["action"] === "Mua ngay") {
+        $id_product=$_POST['id_sp'];
+        $number=$_POST['sl_sp'];
+        header("Location: thanhtoanmuangay.php?id_product=$id_product&number=$number");
+    }
     if ($_POST["action"] === "Thêm vào giỏ") {
         session_start();
         $acc = $_SESSION['acc'];
@@ -507,59 +819,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $insertQuery = "INSERT INTO cart (id_acc, id_product, number_products) VALUES ('$acc', '$id_sp', $sl_sp)";
             $conn->query($insertQuery);
         }
-    
+        header("Location: Giohang.php");
         $conn->close();
     }
 
-    if ($_POST["action"] === "Thêm vào giỏ này cu roi hong sai nua ") {//*******  mua giỏ hang **************************** */
-        //include('account.php');
-        session_start();
-        // Truy cập giá trị của biến toàn cục $acc
-        $acc = $_SESSION['acc'];
-        // Kết nối đến cơ sở dữ liệu
+    if ($_POST["action"] === "comment") {//*******  mua giỏ hang **************************** */
+        echo" comment ";
+        echo $_POST["comment"];
+
         $servername = "localhost";
         $username = "root";
         $password = "";
         $dbname = "flower";
-
         $conn = new mysqli($servername, $username, $password, $dbname);
-        $sl_sp = $_POST['sl_sp'];
-        $id_sp = $_POST['id_sp'];
-        $query = "SELECT product FROM giohang WHERE id = '$acc'";
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $id_sp = $_POST['id_sp'];
-            $sl_sp = $_POST['sl_sp'];
+        if ($conn->connect_error) {
+            die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
             
-            // Lấy giá trị cũ từ cơ sở dữ liệu
-            $query = "SELECT gio FROM client WHERE id = '$acc'";
-            $result = $conn->query($query);
-            
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $gio_cu = $row['gio'];
-                
-                // add 
-                $gio_moi =$gio_cu."ID_".$id_sp."_SL_".$sl_sp."__//__";
-                
-                //  UPDATE
-                $sql = "UPDATE client SET gio = '$gio_moi' WHERE id = '$acc'";
-                
-                if ($conn->query($sql) === TRUE) {
-                    echo "Cập nhật dữ liệu thành công!";
-                    
-                } else {
-                    echo "Lỗi: " . $conn->error;
-                }
-            } else {
-                echo "Không tìm thấy dữ liệu cho ID $acc";
-            }
-        } else {
-            echo "Yêu cầu không hợp lệ.";
         }
+        session_start();
+        $acc_comment = $_SESSION['acc'];
+        $content=$_POST["comment"];
+        $id_sp=$_POST["id_sp"];
+        		
 
-        $conn->close();
-        header("Location: Giohang.php");
-        exit();
+        $sql = "INSERT INTO `comment` (id_cus_comment, id_product, content_comment) VALUES (?,?, ?)";
+        $stmt = $conn->prepare($sql);
+    
+        if ($stmt) {
+            $stmt->bind_param("sss", $acc_comment,  $id_sp, $content);
+    
+            if ($stmt->execute()) {
+                header('Location: info.php');
+                header("Location: info.php?id=" . $id_sp);
+                echo "Thêm dữ liệu thành công!";
+            } else {
+                echo "Lỗi: " . $stmt->error;
+            }
+    
+            $stmt->close();
+        } else {
+            echo "Lỗi: " . $conn->error;
+        }
+    
     }
 
     
@@ -585,25 +886,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $name = isset($_POST['name']) ? $_POST['name'] : '';
         $sdt = isset($_POST['sdt']) ? $_POST['sdt'] : '';
         $address = isset($_POST['address']) ? $_POST['address'] : '';
+        $currentDate = date("Y-m-d");
     
         // Validate form data (you can add more validation as needed)
+
     
-        $sql = "INSERT INTO `order` (id, id_cus, name, sdt, gender, address) VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-    
-        if ($stmt) {
-            $stmt->bind_param("ssssss", $id, $id_cus, $name, $sdt, $gender, $address);
-    
-            if ($stmt->execute()) {
-                echo "Thêm dữ liệu thành công!";
-            } else {
-                echo "Lỗi: " . $stmt->error;
-            }
-    
-            $stmt->close();
-        } else {
-            echo "Lỗi: " . $conn->error;
-        }
+
     
         // Thêm vào chi tiết hóa đơn
     
@@ -622,6 +910,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     
                         if ($stmt->execute()) {
                             echo "Thêm dữ liệu thành công!";
+                            header("Location: inhoadon.php?id=$id");
                         } else {
                             echo "Lỗi: " . $stmt->error;
                         }
@@ -632,7 +921,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     }
                 
             }
+        
+
+        $sql = "INSERT INTO `order` (id, id_cus, name, sdt, gender, address,date) VALUES (?,?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+    
+        if ($stmt) {
+            $stmt->bind_param("sssssss", $id, $id_cus, $name, $sdt, $gender, $address,$currentDate);
+    
+            if ($stmt->execute()) {
+                echo "Thêm dữ liệu thành công!";
+            } else {
+                echo "Lỗi: " . $stmt->error;
+            }
+    
+            $stmt->close();
+        } else {
+            echo "Lỗi: " . $conn->error;
         }
+    }
+    else{
+    header("Location: thanhtoan2.php?status=bankhongcosp");
+    }
     
         $conn->close();
     } 
@@ -690,8 +1000,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
     if ($_POST["action"] === "Hủy thêm sản Phẩm") 
     {
-        header('Location: addproductmanagerment.php');
+        header('Location: them_moi_san_pham.php');
     }
+
     if ($_POST["action"] === "ADD New Product") 
     { // thêm sản phầm adminmmmmmmmmmmmmmmmmmmmmmmmm
         echo "them moi";
@@ -713,6 +1024,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $productQuantity = isset($_POST['product-quantity']) ? $_POST['product-quantity'] : '';
         $productDescription = isset($_POST['product-description']) ? $_POST['product-description'] : '';
         $productimage = isset($_POST['product-image']) ? $_POST['product-image'] : '';
+        $productcategory = isset($_POST['category']) ? $_POST['category'] : '';
+        $sl = isset($_POST['sl_in_kho']) ? $_POST['sl_in_kho'] : '';
+        $id_kho = isset($_POST['kho']) ? $_POST['kho'] : '';
         #if(isset($_POST['submit']))
         #{
         #    $image=$_FILES["product-image"]['name'];
@@ -744,12 +1058,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         } else {
             echo "<p><strong>Hình ảnh:</strong> No image uploaded</p>";
         }
+    
+        if(intval($productPrice)>0 )
+        {
+                    $id = uniqid();
+                    echo $productDescription;
+                    $sql = "INSERT INTO ttsp (id, name, gia,mota,image,category) 
+                    VALUES ('$id', '$productName','$productPrice', '$productDescription','$fileName','$productcategory')";
+                    
+                        if ($conn->query($sql) === TRUE) {
+                            echo "Thêm dữ liệu thành công!";
+                            // header('Location: them_moi_san_pham.php?status=đã thêm thanh công');
+                        } 
+                        else {
+                            echo "Lỗi: " . $sql . "<br>" . $conn->error;
+                        }
+
+                    $sql = "INSERT INTO chitiet_kho (id_of_kho, id_sp, sl_in_kho) 
+                    VALUES ('$id_kho ', '$id','$sl')";
+                    
+                        if ($conn->query($sql) === TRUE) {
+                            echo "Thêm dữ liệu thành công!";
+                            header('Location: them_moi_san_pham.php?status=đã thêm thanh công');
+                        } 
+                        else {
+                            echo "Lỗi: " . $sql . "<br>" . $conn->error;
+                        }
+        
+
+        }
+        else{
+            header('Location: them_moi_san_pham.php?status=đã thêm khong thanh công');
+        }
+    }
+
+
+    if ($_POST["action"] === "Thêm kho mới") 
+    { // thêm sản phầm adminmmmmmmmmmmmmmmmmmmmmmmmm
+        
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "flower";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        // Kiểm tra kết nối
+        if ($conn->connect_error) {
+            die("Kết nối đến cơ sở dữ liệu thất bại: " . $conn->connect_error);
+        }
+        // Retrieve form data
+        $status_kho = isset($_POST['status KHO']) ? $_POST['status KHO'] : 'đang hoạt động';
+        $address= isset($_POST['address']) ? $_POST['address'] : '';
+        $name = isset($_POST['name']) ? $_POST['name'] : '';
+        $id = uniqid();
+        #if(isset($_POST['submit']))
+        #{
+        #    $image=$_FILES["product-image"]['name'];
+        #    echo $image;
+        #}
+    
+        // Display the received data (for testing purposes)
+        echo "<h2>Received Data:</h2>";
+        echo "<p><strong>Tên Sản Phẩm:</strong> $productName</p>";
+        echo "<p><strong>Giá:</strong> $productPrice</p>";
+        echo "<p><strong>Kích thước:</strong> $productSize</p>";
+        echo "<p><strong>Số lượng:</strong> $productQuantity</p>";
+        echo "<p><strong>Mô tả:</strong> $productDescription</p>";
+        echo "<p><strong>Image_path:</strong> $productimage</p>";
+    
+        // Handle file upload (if needed)
+
     $id = uniqid();
-    $sql = "INSERT INTO ttsp (id, name, gia,mota,image) 
-    VALUES ('$id', '$productName','$productPrice', '$productDescription','$fileName')";
+    echo $productDescription;
+    $sql = "INSERT INTO kho (id_kho, name, address_kho,state) 
+    VALUES ('$id', '$name','$address', '$status_kho ')";
     
         if ($conn->query($sql) === TRUE) {
             echo "Thêm dữ liệu thành công!";
+            header('Location: taokhohang.php?status=đã thêm kho thành công');
         } 
         else {
             echo "Lỗi: " . $sql . "<br>" . $conn->error;
@@ -798,6 +1185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         
                 if ($stmt->execute()) {
                     echo "Thêm dữ liệu thành công!";
+                    header('Location: contact_us.php?status=guitinthanhcong');
                 } else {
                     echo "Lỗi: " . $stmt->error;
                 }
@@ -807,6 +1195,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 echo "Lỗi: " . $conn->error;
             }
     } 
+
+    if ($_POST["action"] === "kiểm tra hóa đơn") 
+    {
+        header('Location: check_hoa_don.php');
+    }
 
     //else {
         // Redirect or handle the case when the form is not submitted via POST

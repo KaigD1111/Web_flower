@@ -57,11 +57,31 @@
         font-size: 24px; /* Adjust the font size of the close icon */
         cursor: pointer; /* Add cursor pointer for interaction */
   } 
-  
+  .closebtn:hover {
+  color: black;
+}
+
+.alert {
+  opacity: 1;
+  transition: opacity 0.6s; /* 600ms to fade out */
+}
     </style>
 
 </head>
 <body>
+<?php
+$status = isset($_GET['status']) ? $_GET['status'] : '';
+if ($status === 'saioldpass') {
+    ?>
+                  <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        nhập sai mật khẩu cũ
+      </div>
+
+
+<?php
+} 
+?>
 <div class="Password">
   <form action="Processing.php" method = "post">
         <h3>ĐỔI MẬT KHẨU</h3>
